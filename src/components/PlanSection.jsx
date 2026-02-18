@@ -60,13 +60,10 @@ function SmartStepCard({ task, isOpen, onToggle, onViewFullPlan }) {
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5 flex-shrink-0">
-          <span className="text-lg">{task.icon}</span>
-          <Icons.ChevronRight
-            size={14}
-            className={`text-gray-300 transition-transform ${isOpen ? 'rotate-90' : ''}`}
-          />
-        </div>
+        <Icons.ChevronRight
+          size={14}
+          className={`text-gray-300 flex-shrink-0 transition-transform ${isOpen === true ? 'rotate-90' : ''}`}
+        />
       </button>
 
       {/* Expanded body — always rendered when isOpen is true */}
@@ -166,13 +163,10 @@ function StepCard({ task, stepNum, isOpen, onToggle }) {
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5 flex-shrink-0">
-          <span className="text-lg">{task.icon}</span>
-          <Icons.ChevronRight
-            size={14}
-            className={`text-gray-300 transition-transform ${isOpen ? 'rotate-90' : ''}`}
-          />
-        </div>
+        <Icons.ChevronRight
+          size={14}
+          className={`text-gray-300 flex-shrink-0 transition-transform ${isOpen ? 'rotate-90' : ''}`}
+        />
       </button>
 
       {/* Expanded body */}
@@ -184,17 +178,17 @@ function StepCard({ task, stepNum, isOpen, onToggle }) {
             <div className="flex gap-2 mb-4">
               <button
                 onClick={() => setMode('self')}
-                className="flex-1 flex flex-col items-center gap-1.5 bg-gray-50 border border-gray-200 rounded-2xl py-3 px-2 hover:border-gray-300 hover:bg-gray-100 transition-all active:scale-95"
+                className="flex-1 flex items-center justify-center gap-1.5 bg-white border border-orange-200 rounded-xl px-3 py-2 hover:border-brand-orange hover:bg-orange-50 active:scale-95 transition-all"
               >
-                <span className="text-xl">✍️</span>
-                <span className="text-xs font-semibold text-gray-700">Fill in yourself</span>
+                <span className="text-xs">✍️</span>
+                <span className="text-xs font-semibold text-gray-600">Fill in Yourself</span>
               </button>
               <button
                 onClick={() => { setMode('ai'); handleAIDraft(); }}
-                className="flex-1 flex flex-col items-center gap-1.5 bg-orange-50 border border-orange-200 rounded-2xl py-3 px-2 hover:border-brand-orange hover:bg-orange-100 transition-all active:scale-95"
+                className="flex-1 flex items-center justify-center gap-1.5 bg-brand-orange rounded-xl px-3 py-2 hover:bg-orange-600 active:scale-95 transition-all"
               >
-                <span className="text-xl">✨</span>
-                <span className="text-xs font-semibold text-brand-orange">Consult assistant</span>
+                <Icons.Sparkle size={12} className="text-white"/>
+                <span className="text-xs font-semibold text-white">Consult Assistant</span>
               </button>
             </div>
           )}
@@ -242,24 +236,22 @@ function StepCard({ task, stepNum, isOpen, onToggle }) {
               )}
 
               {/* Save / switch */}
-              <div className="flex gap-2 pt-1">
-                <button className="btn-primary flex-1">Save Step</button>
+              <div className="space-y-2 pt-1">
+                <button className="btn-primary w-full">Save Step</button>
                 {mode === 'ai' && (
                   <button
                     onClick={() => { setMode('self'); setAiDone(false); }}
-                    className="btn-ghost px-3"
-                    title="Edit manually"
+                    className="w-full text-center text-xs text-brand-orange font-medium py-1 hover:underline transition-all"
                   >
-                    ✍️
+                    ✍️ Edit manually instead
                   </button>
                 )}
                 {mode === 'self' && (
                   <button
                     onClick={() => { setMode('ai'); setAiDone(false); handleAIDraft(); }}
-                    className="btn-ai px-3"
-                    title="Consult assistant"
+                    className="w-full text-center text-xs text-brand-orange font-medium py-1 hover:underline transition-all"
                   >
-                    ✨
+                    ✨ Use assistant instead
                   </button>
                 )}
               </div>

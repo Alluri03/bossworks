@@ -59,10 +59,25 @@ function ProjectCard({ project, onClick }) {
   const pct      = project.tasks > 0 ? Math.round((project.completedTasks / project.tasks) * 100) : 0;
   const owner    = memberById(project.owner);
 
+  if (isLocked) {
+    return (
+      <div className="rounded-2xl border border-dashed border-gray-200 bg-gray-50 px-4 py-3 flex items-center gap-3">
+        {/* Lock badge */}
+        <div className="w-8 h-8 rounded-xl bg-gray-200 flex items-center justify-center flex-shrink-0">
+          <Icons.Lock size={14} className="text-gray-400"/>
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-semibold text-gray-400 truncate">{project.title}</div>
+          <div className="text-[11px] text-gray-400 truncate mt-0.5">{project.description}</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
-      className={`card transition-all ${isLocked ? 'opacity-50' : 'cursor-pointer hover:shadow-md active:scale-[0.98]'}`}
-      onClick={!isLocked ? onClick : undefined}
+      className="card cursor-pointer hover:shadow-md active:scale-[0.98] transition-all"
+      onClick={onClick}
     >
       <div className="flex items-center gap-2">
         <div className="flex-1 min-w-0">
@@ -70,52 +85,40 @@ function ProjectCard({ project, onClick }) {
           {/* Title row */}
           <div className="flex items-center gap-2 mb-0.5">
             <span className="text-sm font-semibold text-gray-800 truncate">{project.title}</span>
-            {isLocked && <Icons.Lock size={12} className="text-gray-300 flex-shrink-0"/>}
           </div>
 
-          {isLocked ? (
-            <div className="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
-              <Icons.Lock size={10}/>
-              <span className="truncate">{project.unlockCondition}</span>
+          {/* Description — single line */}
+          <div className="text-[11px] text-gray-400 truncate mb-2">{project.description}</div>
+
+          {/* Progress row */}
+          <div className="flex items-center gap-2 mb-2">
+            <div className="progress-bar flex-1">
+              <div className="progress-fill" style={{ width: `${pct}%`, backgroundColor: ORANGE }}/>
             </div>
-          ) : (
-            <>
-              {/* Description — single line */}
-              <div className="text-[11px] text-gray-400 truncate mb-2">{project.description}</div>
+            <span className="text-[11px] font-bold flex-shrink-0" style={{ color: ORANGE }}>{pct}%</span>
+            <span className="text-[11px] text-gray-400 flex-shrink-0">{project.completedTasks}/{project.tasks}</span>
+          </div>
 
-              {/* Progress row */}
-              <div className="flex items-center gap-2 mb-2">
-                <div className="progress-bar flex-1">
-                  <div className="progress-fill" style={{ width: `${pct}%`, backgroundColor: ORANGE }}/>
-                </div>
-                <span className="text-[11px] font-bold flex-shrink-0" style={{ color: ORANGE }}>{pct}%</span>
-                <span className="text-[11px] text-gray-400 flex-shrink-0">{project.completedTasks}/{project.tasks}</span>
+          {/* Owner + notification — same bottom row */}
+          <div className="flex items-center justify-between">
+            {owner && (
+              <div className="flex items-center gap-1.5">
+                <Avatar memberId={project.owner}/>
+                <span className="text-[11px] text-gray-500">{owner.name}</span>
               </div>
-
-              {/* Owner + notification — same bottom row */}
-              <div className="flex items-center justify-between">
-                {owner && (
-                  <div className="flex items-center gap-1.5">
-                    <Avatar memberId={project.owner}/>
-                    <span className="text-[11px] text-gray-500">{owner.name}</span>
-                  </div>
-                )}
-                {project.notifications > 0 && (
-                  <div className="flex items-center gap-1 bg-red-50 border border-red-100 rounded-full px-2 py-0.5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0"/>
-                    <span className="text-[10px] font-semibold text-red-500">
-                      {project.notifications} update{project.notifications > 1 ? 's' : ''}
-                    </span>
-                  </div>
-                )}
+            )}
+            {project.notifications > 0 && (
+              <div className="flex items-center gap-1 bg-red-50 border border-red-100 rounded-full px-2 py-0.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0"/>
+                <span className="text-[10px] font-semibold text-red-500">
+                  {project.notifications} update{project.notifications > 1 ? 's' : ''}
+                </span>
               </div>
-            </>
-          )}
+            )}
+          </div>
         </div>
 
-        {!isLocked && (
-          <Icons.ChevronRight size={14} className="text-gray-300 flex-shrink-0"/>
-        )}
+        <Icons.ChevronRight size={14} className="text-gray-300 flex-shrink-0"/>
       </div>
     </div>
   );
@@ -320,30 +323,11 @@ export default function TrackSection() {
       <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-3">
         {view === 'projects' && (
           <>
-            <div className="section-label px-1">Now — While Building Your Plan</div>
             {activeProjects.map(p => (
               <ProjectCard key={p.id} project={p} onClick={() => setSelectedProject(p)} />
             ))}
 
-            {/* Go Pro upsell */}
-            <div
-              className="rounded-2xl p-4 flex items-center justify-between shadow-sm"
-              style={{ background: 'linear-gradient(135deg, #E8722A, #c45e1a)' }}
-            >
-              <div>
-                <div className="text-base font-bold text-white">Go Pro</div>
-                <div className="text-sm text-white/80">
-                  <span className="font-bold">$20/month</span>{' '}
-                  <span className="line-through text-white/50">$49</span>
-                </div>
-                <div className="text-xs text-white/70 mt-1">Unlimited projects · Premium AI · Priority support</div>
-              </div>
-              <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
-                <Icons.ChevronRight size={16} className="text-white"/>
-              </div>
-            </div>
-
-            <div className="section-label px-1 mt-2">After Plan — Unlocks When Plan is Complete</div>
+<div className="section-label px-1 mt-2">Execution Phase: Unlocks When Plan is Complete</div>
             {lockedProjects.map(p => (
               <ProjectCard key={p.id} project={p} />
             ))}

@@ -5,9 +5,9 @@ export const PLAN_STAGES = {
 };
 
 export const TEAM_MEMBERS = [
-  { id: 'u-1', name: 'Sarah',  initials: 'S', color: '#10B981' },
-  { id: 'u-2', name: 'Mike',   initials: 'M', color: '#6366F1' },
-  { id: 'u-3', name: 'You',    initials: 'Y', color: '#E8722A' },
+  { id: 'u-1', name: 'Sarah',  initials: 'S', color: '#3B82F6' },
+  { id: 'u-2', name: 'Mike',   initials: 'M', color: '#3B82F6' },
+  { id: 'u-3', name: 'You',    initials: 'Y', color: '#3B82F6' },
 ];
 
 export const TASK_TYPES = {
