@@ -75,8 +75,6 @@ export default function App() {
     }
   };
 
-  const TAB_LABELS = { plan: 'Plan', track: 'Projects', finance: 'Expenses', funding: 'Funding Assistant' };
-
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       {/* Phone frame */}
