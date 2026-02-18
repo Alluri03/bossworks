@@ -4,6 +4,7 @@ import TrackSection from './components/TrackSection';
 import FundingSection from './components/FundingSection';
 import FinanceSection from './components/FinanceSection';
 import { Icons } from './components/Icons';
+import { BUSINESS_PROFILE } from './data/appData';
 
 const AI_HINTS = {
   plan:    'Ask me to help fill in any step of your plan…',
@@ -99,13 +100,13 @@ export default function App() {
             <div className="flex items-center gap-3">
               {/* Logo circle */}
               <div className="w-11 h-11 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center shadow-sm">
-                <span className="text-xl">🍜</span>
+                <span className="text-xl">{BUSINESS_PROFILE.emoji}</span>
               </div>
               <div>
-                <div className="text-base font-bold text-white leading-tight">Ramen Shop</div>
+                <div className="text-base font-bold text-white leading-tight">{BUSINESS_PROFILE.businessName}</div>
                 <div className="flex items-center gap-1 mt-0.5">
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                  <span className="text-[11px] text-white/70">South Austin, TX</span>
+                  <span className="text-[11px] text-white/70">{BUSINESS_PROFILE.location}</span>
                 </div>
               </div>
             </div>

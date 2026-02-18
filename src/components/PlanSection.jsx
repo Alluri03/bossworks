@@ -1,10 +1,19 @@
 import { useState } from 'react';
-import { PLAN_BUILDER_TASKS, FINANCIAL_PLAN_DATA, PITCH_DECK_SECTIONS } from '../data/appData';
+import { buildPlanTasks, DEMO_ONBOARDING_DATA, FINANCIAL_PLAN_DATA, PITCH_DECK_SECTIONS } from '../data/appData';
 import { Icons } from './Icons';
+
+const PLAN_BUILDER_TASKS = buildPlanTasks(DEMO_ONBOARDING_DATA);
 
 /* ─── AI_DRAFTS ──────────────────────────────────────────────── */
 const AI_DRAFTS = {
   // Business Plan drafts
+  'pb-0': {
+    businessName: DEMO_ONBOARDING_DATA.businessName,
+    location:     DEMO_ONBOARDING_DATA.location,
+    tagline:      'The best ramen in South Austin — 12 minutes or less.',
+    uniqueness:   DEMO_ONBOARDING_DATA.uniqueness,
+    businessIdea: DEMO_ONBOARDING_DATA.businessIdea,
+  },
   'pb-1': {
     icp:     'Young professionals aged 25–38, household income $65k+, living or working within 3 miles of South Congress Ave. Foodie-curious, values authenticity and speed.',
     pains:   '1. No authentic tonkotsu ramen within 5 miles.  2. Long waits (45+ min) at competing ramen spots north of the river.  3. No quality late-night ramen option after 9 PM.',

@@ -26,20 +26,61 @@ export const PLAN_SHELL = {
   confidenceScore: 42,
 };
 
-export const PLAN_BUILDER_TASKS = [
-  {
-    id: 'pb-1',
-    phase: 'Customer & Offer',
-    icon: '👥',
-    type: TASK_TYPES.INPUT,
-    title: 'Ideal Customer Profile',
-    status: 'complete',
-    fields: [
-      { key: 'icp',     label: 'Primary Customer',  value: 'Young professionals 25–38, $65k+ income, foodie-curious' },
-      { key: 'pains',   label: 'Top 3 Pains',        value: 'No authentic ramen nearby; long waits at competition; no late-night option' },
-      { key: 'promise', label: 'Core Promise',        value: 'Best bowl in South Austin, ready in 12 minutes' },
-    ],
-  },
+// Business profile — single source of truth for app header + pre-fills
+export const BUSINESS_PROFILE = {
+  businessName: 'Ramen Shop',
+  emoji: '🍜',
+  location: 'South Austin, TX',
+};
+
+// Demo onboarding data (mirrors what real onboarding would collect)
+export const DEMO_ONBOARDING_DATA = {
+  businessName: 'Ramen Shop',
+  businessIdea: 'An authentic Japanese ramen restaurant in South Austin serving tonkotsu-first bowls with locally sourced pork and an open-kitchen experience.',
+  uniqueness: 'Only authentic ramen in South Austin — locally sourced pork, open kitchen, late-night hours.',
+  location: 'South Austin, TX',
+};
+
+// Converts onboarding answers into a pre-filled plan tasks array
+export function buildPlanTasks(onboarding = {}) {
+  const {
+    businessName = 'My Business',
+    businessIdea = '',
+    uniqueness = '',
+    location = '',
+  } = onboarding;
+
+  return [
+    // ── Brand Identity (pre-filled from onboarding) ──────────────
+    {
+      id: 'pb-0',
+      phase: 'Brand Identity',
+      icon: '🏷️',
+      type: TASK_TYPES.INPUT,
+      title: 'Brand Identity',
+      status: 'complete',
+      fields: [
+        { key: 'businessName', label: 'Business Name',         value: businessName },
+        { key: 'location',     label: 'Location',              value: location },
+        { key: 'tagline',      label: 'Tagline / One-liner',   value: '' },
+        { key: 'uniqueness',   label: 'What Makes You Unique', value: uniqueness },
+        { key: 'businessIdea', label: 'Business Idea',         value: businessIdea },
+      ],
+    },
+    // ── Customer & Offer ─────────────────────────────────────────
+    {
+      id: 'pb-1',
+      phase: 'Customer & Offer',
+      icon: '👥',
+      type: TASK_TYPES.INPUT,
+      title: 'Ideal Customer Profile',
+      status: 'complete',
+      fields: [
+        { key: 'icp',     label: 'Primary Customer',  value: 'Young professionals 25–38, $65k+ income, foodie-curious' },
+        { key: 'pains',   label: 'Top 3 Pains',        value: 'No authentic ramen nearby; long waits at competition; no late-night option' },
+        { key: 'promise', label: 'Core Promise',        value: uniqueness || 'Best bowl in South Austin, ready in 12 minutes' },
+      ],
+    },
   {
     id: 'pb-2',
     phase: 'Customer & Offer',
@@ -141,7 +182,11 @@ export const PLAN_BUILDER_TASKS = [
       { key: 'openingWeek', label: 'Opening Week Target',  value: '' },
     ],
   },
-];
+  ]; // end buildPlanTasks
+}
+
+// Legacy static export for any components not yet migrated
+export const PLAN_BUILDER_TASKS = buildPlanTasks(DEMO_ONBOARDING_DATA);
 
 export const EXECUTION_PROJECTS = [
   // ── Active now (can run while building the plan) ──────────────
