@@ -14,7 +14,7 @@ const AI_HINTS = {
 const NAV_ITEMS = [
   { id: 'plan',    label: 'Plan',    Icon: Icons.Plan    },
   { id: 'track',   label: 'Track',   Icon: Icons.Track   },
-  { id: 'finance', label: 'Finance', Icon: Icons.Finance },
+  { id: 'finance', label: 'Expenses', Icon: Icons.Finance },
   { id: 'funding', label: 'Funding', Icon: Icons.Funding },
 ];
 
@@ -75,7 +75,7 @@ export default function App() {
     }
   };
 
-  const TAB_LABELS = { plan: 'Plan', track: 'Projects', finance: 'Finance', funding: 'Funding Assistant' };
+  const TAB_LABELS = { plan: 'Plan', track: 'Projects', finance: 'Expenses', funding: 'Funding Assistant' };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
@@ -124,12 +124,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* ── Page title — only shown for Funding Assistant ── */}
-        {activeTab === 'funding' && (
-          <div className="flex-shrink-0 bg-white border-b border-gray-100 px-4 py-3">
-            <h1 className="text-lg font-bold text-gray-900">{TAB_LABELS[activeTab]}</h1>
-          </div>
-        )}
 
         {/* ── Scrollable content ── */}
         <div className="flex-1 overflow-hidden">

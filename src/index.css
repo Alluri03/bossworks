@@ -88,6 +88,15 @@
   .ai-bar {
     @apply bg-white border-t border-gray-100 px-4 py-3;
   }
+  /* Expert / modal bottom sheet */
+  .modal-sheet {
+    @apply fixed bottom-0 bg-white rounded-t-3xl shadow-2xl z-50;
+    width: 393px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-height: 85vh;
+    overflow-y: auto;
+  }
 }
 
 @keyframes slideDown {
