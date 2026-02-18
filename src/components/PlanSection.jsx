@@ -11,8 +11,6 @@ const AI_DRAFTS = {
     businessName: DEMO_ONBOARDING_DATA.businessName,
     location:     DEMO_ONBOARDING_DATA.location,
     tagline:      'The best ramen in South Austin — 12 minutes or less.',
-    uniqueness:   DEMO_ONBOARDING_DATA.uniqueness,
-    businessIdea: DEMO_ONBOARDING_DATA.businessIdea,
   },
   'pb-1': {
     icp:     'Young professionals aged 25–38, household income $65k+, living or working within 3 miles of South Congress Ave. Foodie-curious, values authenticity and speed.',
@@ -20,9 +18,10 @@ const AI_DRAFTS = {
     promise: 'The best ramen bowl in South Austin, ready in under 12 minutes — made with locally sourced Berkshire pork.',
   },
   'pb-2': {
-    menuItems: 'Tonkotsu Classic · Spicy Miso · Shoyu Chicken · Vegan Shio · Chef Special (rotating) · Kids Bowl. Starters: Gyoza, Karaage, Edamame, Chashu Bao. Drinks: Calpico, Japanese Craft Beer, Yuzu Lemonade.',
-    packages:  'Dine-in (40 seats) · Takeout / Curbside · Catering packages for groups 10+ · DoorDash / Uber Eats delivery.',
-    avgCheck:  '$22 per person including one add-on (egg, extra chashu, or noodle upgrade).',
+    whatYouOffer: DEMO_ONBOARDING_DATA.businessIdea,
+    menuItems:    'Tonkotsu Classic · Spicy Miso · Shoyu Chicken · Vegan Shio · Chef Special (rotating) · Kids Bowl. Starters: Gyoza, Karaage, Edamame, Chashu Bao. Drinks: Calpico, Japanese Craft Beer, Yuzu Lemonade.',
+    packages:     'Dine-in (40 seats) · Takeout / Curbside · Catering packages for groups 10+ · DoorDash / Uber Eats delivery.',
+    avgCheck:     '$22 per person including one add-on (egg, extra chashu, or noodle upgrade).',
   },
   'pb-3': {
     avgPrice:    '$16 for signature bowls. Range $13 (kids) – $19 (premium).',

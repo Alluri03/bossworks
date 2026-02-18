@@ -51,7 +51,7 @@ export function buildPlanTasks(onboarding = {}) {
   } = onboarding;
 
   return [
-    // ── Brand Identity (pre-filled from onboarding) ──────────────
+    // ── Brand Identity — name, location, tagline only ─────────────
     {
       id: 'pb-0',
       phase: 'Brand Identity',
@@ -60,11 +60,9 @@ export function buildPlanTasks(onboarding = {}) {
       title: 'Brand Identity',
       status: 'complete',
       fields: [
-        { key: 'businessName', label: 'Business Name',         value: businessName },
-        { key: 'location',     label: 'Location',              value: location },
-        { key: 'tagline',      label: 'Tagline / One-liner',   value: '' },
-        { key: 'uniqueness',   label: 'What Makes You Unique', value: uniqueness },
-        { key: 'businessIdea', label: 'Business Idea',         value: businessIdea },
+        { key: 'businessName', label: 'Business Name',       value: businessName },
+        { key: 'location',     label: 'Location',            value: location },
+        { key: 'tagline',      label: 'Tagline / One-liner', value: '' },
       ],
     },
     // ── Customer & Offer ─────────────────────────────────────────
@@ -78,48 +76,52 @@ export function buildPlanTasks(onboarding = {}) {
       fields: [
         { key: 'icp',     label: 'Primary Customer',  value: 'Young professionals 25–38, $65k+ income, foodie-curious' },
         { key: 'pains',   label: 'Top 3 Pains',        value: 'No authentic ramen nearby; long waits at competition; no late-night option' },
-        { key: 'promise', label: 'Core Promise',        value: uniqueness || 'Best bowl in South Austin, ready in 12 minutes' },
+        { key: 'promise', label: 'Core Promise',        value: 'Best bowl in South Austin, ready in 12 minutes' },
       ],
     },
-  {
-    id: 'pb-2',
-    phase: 'Customer & Offer',
-    icon: '🍜',
-    type: TASK_TYPES.INPUT,
-    title: 'Menu & Service Model',
-    status: 'complete',
-    fields: [
-      { key: 'menuItems',  label: 'Core Menu Items',    value: '6 ramen bowls, 4 starters, 3 drinks, daily special' },
-      { key: 'packages',   label: 'Service Channels',   value: 'Dine-in, Takeout, Catering (groups 10+)' },
-      { key: 'avgCheck',   label: 'Target Avg Check',   value: '$22 per person' },
-    ],
-  },
-  {
-    id: 'pb-3',
-    phase: 'Market & Competitors',
-    icon: '🔍',
-    type: TASK_TYPES.VALIDATION,
-    title: 'Market & Competitor Analysis',
-    status: 'in-progress',
-    fields: [
-      { key: 'marketSize',       label: 'Target Market Size',   value: '~180,000 residents in South Austin catchment' },
-      { key: 'competitors',      label: 'Mapped Competitors',   value: '7 of 10 complete' },
-      { key: 'differentiation',  label: 'Key Differentiator',   value: 'Local pork sourcing + open kitchen + late-night' },
-    ],
-  },
-  {
-    id: 'pb-4',
-    phase: 'Location & Operations',
-    icon: '📍',
-    type: TASK_TYPES.INPUT,
-    title: 'Location & Premises',
-    status: 'in-progress',
-    fields: [
-      { key: 'location',   label: 'Target Location',     value: 'South Congress Ave corridor' },
-      { key: 'size',       label: 'Space Requirement',   value: '1,200–1,800 sq ft, ground floor' },
-      { key: 'fitOut',     label: 'Fit-Out Estimate',    value: '$28,000–$35,000' },
-    ],
-  },
+    {
+      id: 'pb-2',
+      phase: 'Customer & Offer',
+      icon: '🍜',
+      type: TASK_TYPES.INPUT,
+      title: 'Menu & Service Model',
+      // businessIdea pre-fills the "What You Offer" field — directly answers what the business does
+      status: businessIdea ? 'in-progress' : 'todo',
+      fields: [
+        { key: 'whatYouOffer', label: 'What You Offer',      value: businessIdea },
+        { key: 'menuItems',    label: 'Core Menu / Services', value: '6 ramen bowls, 4 starters, 3 drinks, daily special' },
+        { key: 'packages',     label: 'Service Channels',     value: 'Dine-in, Takeout, Catering (groups 10+)' },
+        { key: 'avgCheck',     label: 'Target Avg Check',     value: '$22 per person' },
+      ],
+    },
+    {
+      id: 'pb-3',
+      phase: 'Market & Competitors',
+      icon: '🔍',
+      type: TASK_TYPES.VALIDATION,
+      title: 'Market & Competitor Analysis',
+      status: 'in-progress',
+      fields: [
+        { key: 'marketSize',      label: 'Target Market Size', value: `~180,000 residents in ${location || 'your area'} catchment` },
+        { key: 'competitors',     label: 'Mapped Competitors', value: '7 of 10 complete' },
+        // uniqueness pre-fills Key Differentiator — that's exactly what the user described
+        { key: 'differentiation', label: 'Key Differentiator', value: uniqueness || 'Local pork sourcing + open kitchen + late-night' },
+      ],
+    },
+    {
+      id: 'pb-4',
+      phase: 'Location & Operations',
+      icon: '📍',
+      type: TASK_TYPES.INPUT,
+      title: 'Location & Premises',
+      status: 'in-progress',
+      fields: [
+        // location pre-fills Target Location — direct match
+        { key: 'location',   label: 'Target Location',   value: location || 'South Congress Ave corridor' },
+        { key: 'size',       label: 'Space Requirement', value: '1,200–1,800 sq ft, ground floor' },
+        { key: 'fitOut',     label: 'Fit-Out Estimate',  value: '$28,000–$35,000' },
+      ],
+    },
   {
     id: 'pb-5',
     phase: 'Location & Operations',
