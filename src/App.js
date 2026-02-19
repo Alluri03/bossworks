@@ -4,7 +4,12 @@ import TrackSection from './components/TrackSection';
 import FundingSection from './components/FundingSection';
 import FinanceSection from './components/FinanceSection';
 import { Icons } from './components/Icons';
-import { BUSINESS_PROFILE } from './data/appData';
+import { BUSINESS_PROFILE, EXECUTION_PROJECTS } from './data/appData';
+
+// Count total active notifications across all track projects
+const TRACK_NOTIFICATIONS = EXECUTION_PROJECTS
+  .filter(p => p.status === 'active')
+  .reduce((sum, p) => sum + (p.notifications || 0), 0);
 
 const AI_HINTS = {
   plan:    'Ask me to help fill in any step of your plan…',
@@ -137,15 +142,23 @@ export default function App() {
           <div className="flex items-center">
             {NAV_ITEMS.map(({ id, label, Icon }) => {
               const active = activeTab === id;
+              const hasNotif = id === 'track' && TRACK_NOTIFICATIONS > 0;
               return (
                 <button
                   key={id}
                   onClick={() => setActiveTab(id)}
-                  className={`flex-1 flex flex-col items-center gap-1 py-3 transition-all ${active ? 'text-brand-orange' : 'text-gray-400 hover:text-gray-600'}`}
+                  className={`flex-1 flex flex-col items-center py-2 transition-all ${active ? 'text-brand-orange' : 'text-gray-400'}`}
                 >
-                  <Icon size={22}/>
+                  {/* Icon with iOS-style notification dot */}
+                  <div className="relative mb-0.5">
+                    <Icon size={22}/>
+                    {hasNotif && !active && (
+                      <div className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-red-500 border border-white"/>
+                    )}
+                  </div>
                   <span className="text-[10px] font-semibold">{label}</span>
-                  {active && <div className="w-4 h-0.5 rounded-full bg-brand-orange"/>}
+                  {/* iOS-style active dot below label */}
+                  <div className={`mt-0.5 w-1 h-1 rounded-full transition-all ${active ? 'bg-brand-orange' : 'bg-transparent'}`}/>
                 </button>
               );
             })}

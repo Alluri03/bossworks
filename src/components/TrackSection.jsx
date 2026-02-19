@@ -76,9 +76,14 @@ function ProjectCard({ project, onClick }) {
 
   return (
     <div
-      className="card cursor-pointer hover:shadow-md active:scale-[0.98] transition-all"
+      className="card cursor-pointer hover:shadow-md active:scale-[0.98] transition-all relative"
       onClick={onClick}
     >
+      {/* iOS-style notification dot — top-right corner of card */}
+      {project.notifications > 0 && (
+        <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-red-500 border-2 border-white shadow-sm"/>
+      )}
+
       <div className="flex items-center gap-2">
         <div className="flex-1 min-w-0">
 
@@ -99,23 +104,13 @@ function ProjectCard({ project, onClick }) {
             <span className="text-[11px] text-gray-400 flex-shrink-0">{project.completedTasks}/{project.tasks}</span>
           </div>
 
-          {/* Owner + notification — same bottom row */}
-          <div className="flex items-center justify-between">
-            {owner && (
-              <div className="flex items-center gap-1.5">
-                <Avatar memberId={project.owner}/>
-                <span className="text-[11px] text-gray-500">{owner.name}</span>
-              </div>
-            )}
-            {project.notifications > 0 && (
-              <div className="flex items-center gap-1 bg-red-50 border border-red-100 rounded-full px-2 py-0.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0"/>
-                <span className="text-[10px] font-semibold text-red-500">
-                  {project.notifications} update{project.notifications > 1 ? 's' : ''}
-                </span>
-              </div>
-            )}
-          </div>
+          {/* Owner row */}
+          {owner && (
+            <div className="flex items-center gap-1.5">
+              <Avatar memberId={project.owner}/>
+              <span className="text-[11px] text-gray-500">{owner.name}</span>
+            </div>
+          )}
         </div>
 
         <Icons.ChevronRight size={14} className="text-gray-300 flex-shrink-0"/>
@@ -157,21 +152,19 @@ function TaskRow({ task, projectTitle, done, onToggle }) {
           <span className="text-[10px] text-gray-400 capitalize flex-shrink-0">{task.priority}</span>
         </div>
 
-        {/* Assignee + notification — mirrors project card bottom row */}
-        <div className="flex items-center justify-between">
-          {assignee && (
-            <div className="flex items-center gap-1.5">
+        {/* Assignee + notification dot on avatar */}
+        {assignee && (
+          <div className="flex items-center gap-1.5">
+            <div className="relative">
               <Avatar memberId={task.assignee}/>
-              <span className="text-[11px] text-gray-500">{assignee.name}</span>
+              {/* iOS-style notification dot on avatar */}
+              {task.notifications > 0 && (
+                <div className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-red-500 border border-white"/>
+              )}
             </div>
-          )}
-          {task.notifications > 0 && (
-            <div className="flex items-center gap-1 bg-blue-50 border border-blue-100 rounded-full px-2 py-0.5 flex-shrink-0">
-              <div className="w-1.5 h-1.5 rounded-full bg-blue-400"/>
-              <span className="text-[10px] font-semibold text-blue-500">{task.notifications}</span>
-            </div>
-          )}
-        </div>
+            <span className="text-[11px] text-gray-500">{assignee.name}</span>
+          </div>
+        )}
       </div>
     </div>
   );
