@@ -215,7 +215,7 @@ function FundingProjectCard({ project, onClick }) {
   return (
     <div
       className="card cursor-pointer hover:shadow-md active:scale-[0.98] transition-all relative flex-shrink-0 flex flex-col"
-      style={{ width: 160, scrollSnapAlign: 'start', borderTop: `3px solid ${PURPLE}` }}
+      style={{ width: 'calc(100% - 40px)', scrollSnapAlign: 'start', borderTop: `3px solid ${PURPLE}` }}
       onClick={onClick}
     >
       {project.notifications > 0 && (
@@ -433,13 +433,9 @@ function FundingHubView({ onExplore, onSelectFunding, onSelectProject }) {
         {/* Explore Funding CTA */}
         <div className="px-4 pb-3">
           <button onClick={onExplore}
-            className="w-full flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-2xl px-3 py-2.5
-                       hover:border-brand-orange hover:bg-orange-50 transition-all active:scale-[0.98]">
-            <Icons.Sparkle size={14} className="text-brand-orange flex-shrink-0"/>
-            <span className="flex-1 text-sm text-gray-400 text-left">Ask AI to find more opportunities...</span>
-            <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center flex-shrink-0">
-              <Icons.Send size={13} className="text-white"/>
-            </div>
+            className="w-full flex items-center justify-center gap-2 btn-primary active:scale-[0.98]">
+            <Icons.Sparkle size={14} className="text-white flex-shrink-0"/>
+            <span className="font-semibold">Explore Funding</span>
           </button>
         </div>
 
