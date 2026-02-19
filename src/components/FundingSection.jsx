@@ -214,8 +214,8 @@ function FundingProjectCard({ project, onClick }) {
 
   return (
     <div
-      className="card cursor-pointer hover:shadow-md active:scale-[0.98] transition-all relative"
-      style={{ borderLeft: `3px solid ${PURPLE}` }}
+      className="card cursor-pointer hover:shadow-md active:scale-[0.98] transition-all relative flex-shrink-0 flex flex-col"
+      style={{ width: 160, scrollSnapAlign: 'start', borderTop: `3px solid ${PURPLE}` }}
       onClick={onClick}
     >
       {project.notifications > 0 && (
@@ -227,29 +227,26 @@ function FundingProjectCard({ project, onClick }) {
           </span>
         </div>
       )}
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-             style={{ backgroundColor: `${PURPLE}18` }}>
-          <Icons.Funding size={18} style={{ color: PURPLE }}/>
+      {/* Icon */}
+      <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-2"
+           style={{ backgroundColor: `${PURPLE}18` }}>
+        <Icons.Funding size={16} style={{ color: PURPLE }}/>
+      </div>
+      {/* Name */}
+      <div className="text-[13px] font-semibold text-gray-800 leading-snug mb-1.5" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+        {project.name}
+      </div>
+      {/* Status badge */}
+      <span className={`badge text-[10px] self-start mb-2 ${statusStyle}`}>{statusLabel}</span>
+      {/* Progress */}
+      <div className="mt-auto">
+        <div className="flex items-center justify-between mb-1">
+          <span className="text-[10px] text-gray-400">{project.completedTasks}/{project.totalTasks} tasks</span>
+          <span className="text-[10px] font-bold" style={{ color: PURPLE }}>{pct}%</span>
         </div>
-        <div className="flex-1 min-w-0">
-          <div className="text-sm font-semibold text-gray-800 truncate mb-0.5">{project.name}</div>
-          <div className="flex items-center gap-1.5 mb-2">
-            <span className="badge text-[10px]"
-                  style={{ backgroundColor: `${PURPLE}15`, color: PURPLE }}>{project.type}</span>
-            <span className={`badge text-[10px] ${statusStyle}`}>{statusLabel}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="progress-bar flex-1">
-              <div className="progress-fill" style={{ width: `${pct}%`, backgroundColor: PURPLE }}/>
-            </div>
-            <span className="text-[11px] font-bold flex-shrink-0" style={{ color: PURPLE }}>{pct}%</span>
-            <span className="text-[11px] text-gray-400 flex-shrink-0">
-              {project.completedTasks}/{project.totalTasks} tasks
-            </span>
-          </div>
+        <div className="progress-bar">
+          <div className="progress-fill" style={{ width: `${pct}%`, backgroundColor: PURPLE }}/>
         </div>
-        <Icons.ChevronRight size={14} className="text-gray-300 flex-shrink-0"/>
       </div>
     </div>
   );
@@ -422,18 +419,32 @@ function FundingHubView({ onExplore, onSelectFunding, onSelectProject }) {
     <div className="flex flex-col h-full">
       <div className="flex-1 overflow-y-auto">
 
-        {/* Funding Projects section */}
-        <div className="px-4 pt-4 pb-2">
-          <div className="section-label px-1 mb-2">Funding Projects</div>
-          <div className="space-y-3">
+        {/* Funding Projects — horizontal scroll */}
+        <div className="pt-4 pb-2">
+          <div className="section-label px-5 mb-2">Funding Projects</div>
+          <div className="flex gap-3 overflow-x-auto px-4 pb-2 scrollbar-hide"
+               style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
             {FUNDING_PROJECTS.map(proj => (
               <FundingProjectCard key={proj.id} project={proj} onClick={() => onSelectProject(proj)}/>
             ))}
           </div>
         </div>
 
+        {/* Explore Funding CTA */}
+        <div className="px-4 pb-3">
+          <button onClick={onExplore}
+            className="w-full flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-2xl px-3 py-2.5
+                       hover:border-brand-orange hover:bg-orange-50 transition-all active:scale-[0.98]">
+            <Icons.Sparkle size={14} className="text-brand-orange flex-shrink-0"/>
+            <span className="flex-1 text-sm text-gray-400 text-left">Ask AI to find more opportunities...</span>
+            <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center flex-shrink-0">
+              <Icons.Send size={13} className="text-white"/>
+            </div>
+          </button>
+        </div>
+
         {/* Tab bar */}
-        <div className="px-4 pt-3">
+        <div className="px-4">
           <div className="flex border-b border-gray-200">
             {['Grants', 'Loans', 'Investment'].map(tab => (
               <button key={tab} onClick={() => setActiveTab(tab)}
@@ -468,19 +479,6 @@ function FundingHubView({ onExplore, onSelectFunding, onSelectProject }) {
             <FundingCard key={opp.id} opportunity={opp} onClick={() => onSelectFunding(opp)}/>
           ))}
         </div>
-      </div>
-
-      {/* Sticky AI CTA bar */}
-      <div className="flex-shrink-0 bg-white border-t border-gray-100 px-4 py-3">
-        <button onClick={onExplore}
-          className="w-full flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-2xl px-3 py-2.5
-                     hover:border-brand-orange hover:bg-orange-50 transition-all active:scale-[0.98]">
-          <Icons.Sparkle size={14} className="text-brand-orange flex-shrink-0"/>
-          <span className="flex-1 text-sm text-gray-400 text-left">Ask AI to find more opportunities...</span>
-          <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center flex-shrink-0">
-            <Icons.Send size={13} className="text-white"/>
-          </div>
-        </button>
       </div>
     </div>
   );
