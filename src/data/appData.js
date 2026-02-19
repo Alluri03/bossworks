@@ -664,3 +664,48 @@ export const FUNDING_CHAT = [
     },
   },
 ];
+
+export const FUNDING_PROJECTS = [
+  {
+    id: 'fp-1',
+    fundingId: 'f-1',
+    name: 'Texas Restaurant Grant',
+    type: 'Grant',
+    amount: '$50K–$200K',
+    deadline: 'Mar 15, 2026',
+    match: 87,
+    status: 'in-progress',
+    completedTasks: 1,
+    totalTasks: 4,
+    notifications: 2,
+    color: '#7C3AED',
+  },
+  {
+    id: 'fp-2',
+    fundingId: 'f-2',
+    name: 'City of Austin Grant',
+    type: 'Grant',
+    amount: 'Up to $25K',
+    deadline: 'Apr 30, 2026',
+    match: 79,
+    status: 'todo',
+    completedTasks: 0,
+    totalTasks: 3,
+    notifications: 0,
+    color: '#7C3AED',
+  },
+];
+
+export const FUNDING_PROJECT_TASKS = {
+  'fp-1': [
+    { id: 'fpt-1-1', title: 'Extract Business Plan',       status: 'done',        priority: 'high'   },
+    { id: 'fpt-1-2', title: 'Write Grant Essay',           status: 'in-progress', priority: 'high'   },
+    { id: 'fpt-1-3', title: 'Gather Supporting Documents', status: 'todo',        priority: 'medium' },
+    { id: 'fpt-1-4', title: 'Submit Application',          status: 'todo',        priority: 'high'   },
+  ],
+  'fp-2': [
+    { id: 'fpt-2-1', title: 'Extract Business Plan',            status: 'todo', priority: 'high'   },
+    { id: 'fpt-2-2', title: 'Complete Eligibility Checklist',   status: 'todo', priority: 'high'   },
+    { id: 'fpt-2-3', title: 'Write Community Impact Narrative', status: 'todo', priority: 'medium' },
+  ],
+};

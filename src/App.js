@@ -153,7 +153,13 @@ export default function App() {
                   <div className="relative mb-0.5">
                     <Icon size={22}/>
                     {hasNotif && !active && (
-                      <div className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-red-500 border border-white"/>
+                      <div className="absolute -top-1 -right-1.5 flex items-center justify-center
+                                      bg-red-500 rounded-full border-[1.5px] border-white
+                                      min-w-[16px] h-[16px] px-[3px]">
+                        <span className="text-white font-bold leading-none" style={{ fontSize: 9 }}>
+                          {TRACK_NOTIFICATIONS}
+                        </span>
+                      </div>
                     )}
                   </div>
                   <span className="text-[10px] font-semibold">{label}</span>
