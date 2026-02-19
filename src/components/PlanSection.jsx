@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { buildPlanTasks, DEMO_ONBOARDING_DATA, FINANCIAL_PLAN_DATA, PITCH_DECK_SECTIONS } from '../data/appData';
+import { buildPlanTasks, DEMO_ONBOARDING_DATA, FINANCIAL_PLAN_DATA } from '../data/appData';
 import { Icons } from './Icons';
 
 const PLAN_BUILDER_TASKS = buildPlanTasks(DEMO_ONBOARDING_DATA);
@@ -32,37 +32,6 @@ const AI_DRAFTS = {
     competitors:     '10 mapped. Direct: Ramen Tatsu-Ya (North Austin, 45 min away), Yume Wo Katare (Boston-style, cult). Indirect: Soup Peddler, Uchi, local pho shops.',
     gaps:            'No tonkotsu-first spot south of the river. No ramen with local sourcing story. No delivery-optimised ramen in 78704 zip code.',
     differentiation: 'Local Berkshire pork broth · open kitchen · South Austin neighborhood identity · delivery-first packaging · late-night hours (until midnight Fri/Sat).',
-  },
-  // Pitch Deck drafts
-  'pd-1': {
-    painStatement:       'Authentic Japanese ramen is unavailable in South Austin. Residents drive 30+ minutes for quality tonkotsu, settling for mediocre alternatives.',
-    whoFaces:            'Young professionals aged 25–38 earning $65k+, living within 3 miles of South Congress Ave. Food-curious and brand-loyal once won.',
-    currentAlternatives: 'Ramen Tatsu-Ya (North Austin, 45 min away), pho shops (not ramen), fast casual (not authentic). No delivery-optimized option in 78704.',
-  },
-  'pd-2': {
-    solution:          'A tonkotsu-first ramen shop with locally sourced Berkshire pork, open-kitchen experience, and delivery-ready packaging — all in South Austin.',
-    keyDifferentiator: 'Local sourcing story + late-night hours (until midnight Fri/Sat) + delivery-first packaging. No competitor does all three.',
-    uniqueMechanism:   'House-made 18-hour pork broth with seasonal toppings. Supply chain locked in with 2 local farms within 60 miles.',
-  },
-  'pd-3': {
-    tam: '$890M — US ramen restaurant market (2024 estimate)',
-    sam: '$12M — South Austin food service market (78704 + adjacent zips, annual)',
-    som: '$720K — projected Year 1 revenue at 70 covers/day avg over 12 months',
-  },
-  'pd-4': {
-    revenueStreams: 'Dine-in (primary), Takeout/Delivery (DoorDash, Uber Eats), Catering (groups 10+)',
-    pricing:       'Bowl $13–$19, Starters $6–$9, ATV $22. Delivery adds $2.50 packaging surcharge.',
-    unitEconomics: 'Gross margin 66%. Break-even at Month 6 at ~70 covers/day. COGS target 30%.',
-  },
-  'pd-6': {
-    founders:  '[Your name] — CEO/Operator, 8 years restaurant experience. Co-founder — Head Chef, trained in Tokyo.',
-    advisors:  'Restaurant attorney (Austin), CPA with food service clients, former Tatsu-Ya GM as informal advisor.',
-    keyHires:  'Head Chef (Day 1), 2x Line Cooks (Day 1), 3x FOH staff (Day 1), Delivery coordinator (Month 2).',
-  },
-  'pd-7': {
-    amountSeeking: '$129,000 seed — covers fit-out ($35k), equipment ($45k), legal/licensing ($3.5k), working capital ($30k), marketing ($8k), tech ($4.5k).',
-    equityOffered: 'Seeking grant/loan mix where possible. Angel equity: up to 15% for $75k+ check at $500k pre-money.',
-    milestones:    'Sign lease (Month 1), Open (Month 3), Break-even (Month 6), $60k MRR (Month 12), second location feasibility (Month 18).',
   },
 };
 
@@ -445,290 +414,18 @@ function FinancialPlanView() {
   );
 }
 
-/* ─── SmartPitchSlideCard — pd-5 Financial Snapshot ─────────── */
-function SmartPitchSlideCard({ section, isOpen, onToggle, onViewFullPlan }) {
-  const { estimatedBudget, breakEvenMonth, projections } = FINANCIAL_PLAN_DATA;
-  const yr1Revenue = projections.find(p => p.period === '1-12')?.months.reduce((s, m) => s + m.revenue, 0) || 0;
-
-  return (
-    <div className="card">
-      <button type="button" className="w-full flex items-center gap-3 text-left" onClick={onToggle}>
-        <div className="step-num flex-shrink-0 bg-brand-green text-white">
-          <Icons.Check size={13} className="text-white"/>
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="text-sm font-semibold text-gray-800 leading-snug">{section.title}</div>
-          <div className="mt-1 flex items-center gap-1.5">
-            <span className="status-complete">Complete</span>
-            <span className="text-[10px] text-gray-400">· Powered by Financial Plan</span>
-          </div>
-        </div>
-        <Icons.ChevronRight size={14}
-          className={`text-gray-300 flex-shrink-0 transition-transform ${isOpen ? 'rotate-90' : ''}`}/>
-      </button>
-
-      {isOpen && (
-        <div className="mt-4 pt-4 border-t border-gray-100 animate-slide-down space-y-3">
-          <div className="grid grid-cols-3 gap-2">
-            {[
-              { label: 'Budget Need',  value: `$${(estimatedBudget/1000).toFixed(0)}k`, color: 'text-brand-orange' },
-              { label: 'Break-Even',   value: `Month ${breakEvenMonth}`,                 color: 'text-brand-green'  },
-              { label: 'Yr 1 Revenue', value: `$${(yr1Revenue/1000).toFixed(0)}k`,       color: 'text-brand-indigo' },
-            ].map(({ label, value, color }) => (
-              <div key={label} className="bg-gray-50 rounded-xl p-2.5 text-center border border-gray-100">
-                <div className={`text-sm font-bold ${color}`}>{value}</div>
-                <div className="text-[9px] text-gray-400 mt-0.5 leading-tight">{label}</div>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex items-start gap-2 bg-orange-50 border border-orange-100 rounded-xl p-2.5">
-            <Icons.Sparkle size={13} className="text-brand-orange mt-0.5 flex-shrink-0"/>
-            <p className="text-xs text-orange-700 leading-snug">
-              Auto-filled from your Financial Plan. Edit assumptions there to update these numbers.
-            </p>
-          </div>
-
-          <button type="button" onClick={e => { e.stopPropagation(); onViewFullPlan(); }}
-            className="w-full flex items-center justify-between bg-white border border-gray-200 rounded-xl px-3 py-2.5 hover:border-brand-orange hover:bg-orange-50 transition-all group">
-            <span className="text-sm font-semibold text-gray-700 group-hover:text-brand-orange">View full projections →</span>
-            <Icons.ChevronRight size={14} className="text-gray-300 group-hover:text-brand-orange"/>
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
-
-/* ─── PitchSlideCard ─────────────────────────────────────────── */
-function PitchSlideCard({ section, isOpen, onToggle }) {
-  const [mode, setMode]           = useState(null);
-  const [values, setValues]       = useState(() =>
-    Object.fromEntries(section.fields.map(f => [f.key, f.value || '']))
-  );
-  const [aiDone, setAiDone]       = useState(false);
-  const [aiLoading, setAiLoading] = useState(false);
-
-  const st   = STATUS_META[section.status];
-  const done = section.status === 'complete';
-
-  function handleAIDraft() {
-    setAiLoading(true);
-    setTimeout(() => {
-      const drafts = AI_DRAFTS[section.id] || {};
-      setValues(prev => {
-        const next = { ...prev };
-        section.fields.forEach(f => { if (drafts[f.key]) next[f.key] = drafts[f.key]; });
-        return next;
-      });
-      setAiLoading(false);
-      setAiDone(true);
-    }, 1200);
-  }
-
-  return (
-    <div className={`card transition-all ${done ? 'opacity-70' : ''}`}>
-      <button className="w-full flex items-center gap-3 text-left" onClick={onToggle}>
-        <div className={`step-num flex-shrink-0 text-xs ${done
-          ? 'bg-brand-green text-white'
-          : isOpen
-            ? 'bg-brand-orange text-white'
-            : 'bg-gray-100 text-gray-400'
-        }`}>
-          {done ? <Icons.Check size={13} className="text-white"/> : section.slide}
-        </div>
-
-        <div className="flex-1 min-w-0">
-          <div className="text-sm font-semibold text-gray-800 leading-snug">
-            <span className="text-[10px] text-gray-400 font-medium">Slide {section.slide} · </span>
-            {section.title}
-          </div>
-          <div className="mt-1"><span className={st.cls}>{st.label}</span></div>
-        </div>
-
-        <Icons.ChevronRight size={14}
-          className={`text-gray-300 flex-shrink-0 transition-transform ${isOpen ? 'rotate-90' : ''}`}/>
-      </button>
-
-      {isOpen && (
-        <div className="mt-4 pt-4 border-t border-gray-100 animate-slide-down">
-          {/* Mode picker */}
-          {!done && mode === null && (
-            <div className="flex gap-2 mb-4">
-              <button onClick={() => setMode('self')}
-                className="flex-1 flex items-center justify-center gap-1.5 bg-white border border-orange-200 rounded-xl px-3 py-2 hover:border-brand-orange hover:bg-orange-50 active:scale-95 transition-all">
-                <span className="text-xs">✍️</span>
-                <span className="text-xs font-semibold text-gray-600">Fill in Yourself</span>
-              </button>
-              <button onClick={() => { setMode('ai'); handleAIDraft(); }}
-                className="flex-1 flex items-center justify-center gap-1.5 bg-brand-orange rounded-xl px-3 py-2 hover:bg-orange-600 active:scale-95 transition-all">
-                <Icons.Sparkle size={12} className="text-white"/>
-                <span className="text-xs font-semibold text-white">Consult Assistant</span>
-              </button>
-            </div>
-          )}
-
-          {/* AI loading */}
-          {mode === 'ai' && aiLoading && (
-            <div className="flex items-center gap-2 py-4 justify-center animate-fade-in">
-              <div className="flex gap-1">
-                {[0,1,2].map(i => (
-                  <div key={i} className="w-2 h-2 rounded-full bg-brand-orange"
-                    style={{ animation: `bounce 0.8s ${i * 0.15}s infinite alternate` }}/>
-                ))}
-              </div>
-              <span className="text-sm text-gray-400">Drafting with AI…</span>
-            </div>
-          )}
-
-          {/* Fields */}
-          {(mode === 'self' || (mode === 'ai' && !aiLoading)) && (
-            <div className="space-y-3">
-              {section.fields.map(field => (
-                <div key={field.key}>
-                  <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5">
-                    {field.label}
-                  </label>
-                  <textarea className="textarea-field"
-                    rows={values[field.key]?.length > 80 ? 3 : 2}
-                    value={values[field.key]}
-                    onChange={e => setValues(prev => ({ ...prev, [field.key]: e.target.value }))}
-                    placeholder={`Enter ${field.label.toLowerCase()}…`}/>
-                </div>
-              ))}
-
-              {mode === 'ai' && aiDone && (
-                <div className="flex items-start gap-2 bg-orange-50 border border-orange-100 rounded-xl p-2.5">
-                  <Icons.Sparkle size={13} className="text-brand-orange mt-0.5 flex-shrink-0"/>
-                  <p className="text-xs text-orange-700">AI draft added. Edit any field before saving.</p>
-                </div>
-              )}
-
-              <div className="space-y-2 pt-1">
-                <button className="btn-primary w-full">Save Slide</button>
-                {mode === 'ai' && (
-                  <button onClick={() => { setMode('self'); setAiDone(false); }}
-                    className="w-full text-center text-xs text-brand-orange font-medium py-1 hover:underline transition-all">
-                    ✍️ Edit manually instead
-                  </button>
-                )}
-                {mode === 'self' && (
-                  <button onClick={() => { setMode('ai'); setAiDone(false); handleAIDraft(); }}
-                    className="w-full text-center text-xs text-brand-orange font-medium py-1 hover:underline transition-all">
-                    ✨ Use assistant instead
-                  </button>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Completed read-only */}
-          {done && (
-            <div className="space-y-2.5">
-              {section.fields.map(field => (
-                <div key={field.key}>
-                  <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">{field.label}</div>
-                  <div className="text-sm text-gray-700 bg-gray-50 rounded-xl px-3 py-2 leading-relaxed">{field.value}</div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
-
-/* ─── PitchDeckView ──────────────────────────────────────────── */
-function PitchDeckView({ onSwitchToBusiness, onSwitchToFinancial }) {
-  const [openSlide, setOpenSlide] = useState(null);
-
-  const completedPlanSteps = PLAN_BUILDER_TASKS.filter(t => t.status === 'complete').length;
-  const UNLOCK_THRESHOLD   = 3;
-  const isUnlocked         = completedPlanSteps >= UNLOCK_THRESHOLD;
-
-  const complete = PITCH_DECK_SECTIONS.filter(s => s.status === 'complete').length;
-  const total    = PITCH_DECK_SECTIONS.length;
-
-  if (!isUnlocked) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full px-8 text-center pb-12">
-        <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mb-4">
-          <Icons.Lock size={28} className="text-gray-300"/>
-        </div>
-        <div className="text-base font-bold text-gray-700 mb-2">Unlock Your Pitch Deck</div>
-        <div className="text-sm text-gray-400 leading-relaxed mb-5">
-          Complete {UNLOCK_THRESHOLD} steps in your Business Plan to enable pitch deck creation.
-        </div>
-        <div className="w-full mb-2">
-          <div className="progress-bar">
-            <div className="progress-fill bg-brand-orange"
-              style={{ width: `${Math.round((completedPlanSteps / UNLOCK_THRESHOLD) * 100)}%` }}/>
-          </div>
-        </div>
-        <div className="text-xs text-gray-400 mb-6">{completedPlanSteps}/{UNLOCK_THRESHOLD} steps complete</div>
-        <button onClick={onSwitchToBusiness} className="btn-ghost w-full">
-          Go to Business Plan
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col h-full">
-      {/* Progress strip */}
-      <div className="px-4 pt-2 pb-3 flex-shrink-0 flex items-center justify-between">
-        <div className="flex-1 mr-3">
-          <div className="progress-bar">
-            <div className="progress-fill bg-brand-orange" style={{ width: `${Math.round((complete / total) * 100)}%` }}/>
-          </div>
-        </div>
-        <span className="text-xs text-gray-400 flex-shrink-0">{complete}/{total} slides</span>
-      </div>
-
-      <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-3">
-        {/* Info banner */}
-        <div className="flex items-start gap-2 bg-orange-50 border border-orange-100 rounded-xl p-3">
-          <Icons.Sparkle size={13} className="text-brand-orange mt-0.5 flex-shrink-0"/>
-          <p className="text-xs text-orange-700 leading-snug">
-            Investor-ready pitch deck. Fill each slide manually or let the Assistant draft it.
-          </p>
-        </div>
-
-        {/* Slides */}
-        {PITCH_DECK_SECTIONS.map(section => {
-          const isOpen     = openSlide === section.id;
-          const handleToggle = () => setOpenSlide(prev => prev === section.id ? null : section.id);
-
-          if (section.type === 'smart') {
-            return (
-              <SmartPitchSlideCard key={section.id} section={section}
-                isOpen={isOpen} onToggle={handleToggle} onViewFullPlan={onSwitchToFinancial}/>
-            );
-          }
-          return (
-            <PitchSlideCard key={section.id} section={section} isOpen={isOpen} onToggle={handleToggle}/>
-          );
-        })}
-        <div style={{ height: 8 }}/>
-      </div>
-    </div>
-  );
-}
-
 /* ─── Main Export ────────────────────────────────────────────── */
 export default function PlanSection() {
   const [planTab, setPlanTab] = useState('business');
 
   return (
     <div className="flex flex-col h-full">
-      {/* Pill toggle: Business | Financial | Pitch Deck */}
+      {/* Pill toggle: Business | Financial */}
       <div className="px-4 pt-3 pb-2 flex-shrink-0">
         <div className="pill-toggle">
           {[
             ['business',  'Business'],
             ['financial', 'Financial'],
-            ['pitch',     'Pitch Deck'],
           ].map(([id, label]) => (
             <button key={id} onClick={() => setPlanTab(id)}
               className={`pill-tab ${planTab === id ? 'pill-tab-active' : 'pill-tab-inactive'}`}>
@@ -741,12 +438,6 @@ export default function PlanSection() {
       <div className="flex-1 overflow-hidden">
         {planTab === 'business'  && <BusinessPlanView onSwitchToFinancial={() => setPlanTab('financial')} />}
         {planTab === 'financial' && <FinancialPlanView />}
-        {planTab === 'pitch'     && (
-          <PitchDeckView
-            onSwitchToBusiness={() => setPlanTab('business')}
-            onSwitchToFinancial={() => setPlanTab('financial')}
-          />
-        )}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FINANCE_DATA } from '../data/appData';
+import { FINANCE_DATA, REVENUE_DATA, FINANCIAL_PLAN_DATA } from '../data/appData';
 import { Icons } from './Icons';
 
 function fmt(n) {
@@ -155,6 +155,146 @@ function ProjectList({ expenses }) {
   );
 }
 
+/* ── Add Revenue Form ───────────────────────────────────────── */
+function AddRevenueForm({ sources, onAdd }) {
+  const [amount, setAmount] = useState('');
+  const [source, setSource] = useState(sources[0] || '');
+  const [note,   setNote]   = useState('');
+  const MAX = 120;
+
+  function handleSubmit() {
+    if (!amount) return;
+    onAdd({ amount: parseFloat(amount), source, note: note.trim() });
+    setAmount('');
+    setNote('');
+  }
+
+  return (
+    <div className="card space-y-3">
+      <div className="section-label">Add Revenue</div>
+
+      <div>
+        <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5">Amount</label>
+        <div className="flex items-center bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-brand-orange focus-within:ring-2 focus-within:ring-orange-100 transition-all">
+          <span className="text-sm font-semibold text-gray-500 mr-1">$</span>
+          <input
+            type="number"
+            value={amount}
+            onChange={e => setAmount(e.target.value)}
+            placeholder="0.00"
+            className="flex-1 bg-transparent text-sm text-gray-800 placeholder-gray-400 outline-none"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5">Source</label>
+        <select value={source} onChange={e => setSource(e.target.value)} className="input-field">
+          {sources.map(s => <option key={s} value={s}>{s}</option>)}
+        </select>
+      </div>
+
+      <div>
+        <div className="flex items-center justify-between mb-1.5">
+          <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Note</label>
+          <span className={`text-[10px] font-medium ${note.length > MAX * 0.9 ? 'text-brand-orange' : 'text-gray-400'}`}>
+            {note.length}/{MAX}
+          </span>
+        </div>
+        <textarea
+          className="textarea-field"
+          rows={2}
+          maxLength={MAX}
+          value={note}
+          onChange={e => setNote(e.target.value)}
+          placeholder="e.g. Saturday lunch service"
+        />
+      </div>
+
+      <button
+        onClick={handleSubmit}
+        disabled={!amount}
+        className="btn-primary w-full disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        Add Revenue
+      </button>
+    </div>
+  );
+}
+
+/* ── Revenue List ───────────────────────────────────────────── */
+function RevenueList({ entries }) {
+  if (entries.length === 0) {
+    return (
+      <div className="card text-center py-6">
+        <div className="text-2xl mb-2">💵</div>
+        <div className="text-sm text-gray-500 font-medium">No revenue logged yet</div>
+        <div className="text-xs text-gray-400 mt-1">Add your first revenue entry above</div>
+      </div>
+    );
+  }
+  return (
+    <div className="card space-y-3">
+      {entries.map((entry, i) => (
+        <div key={entry.id || i} className="flex items-start gap-3 border-b border-gray-50 pb-3 last:border-0 last:pb-0">
+          <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
+            <span className="text-sm font-bold text-brand-green">${entry.amount >= 1000 ? (entry.amount / 1000).toFixed(1) + 'k' : entry.amount}</span>
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs font-semibold bg-green-50 text-green-600 px-2 py-0.5 rounded-full truncate max-w-[120px]">
+                {entry.source}
+              </span>
+              <span className="text-[10px] text-gray-400 flex-shrink-0">{entry.date}</span>
+            </div>
+            {entry.note && <div className="text-xs text-gray-600 mt-1 leading-snug">{entry.note}</div>}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── Revenue Tab ────────────────────────────────────────────── */
+function RevenueView() {
+  const [entries, setEntries] = useState(REVENUE_DATA.entries);
+  const projected = FINANCIAL_PLAN_DATA.projections[0].months[0].revenue;
+  const total = entries.reduce((sum, e) => sum + e.amount, 0);
+
+  function handleAdd(newEntry) {
+    setEntries(prev => [...prev, { ...newEntry, id: `r-${Date.now()}`, date: 'Today' }]);
+  }
+
+  return (
+    <div className="space-y-3">
+      {/* Summary metrics */}
+      <div className="grid grid-cols-3 gap-2">
+        <div className="card text-center shadow-none px-2">
+          <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Total</div>
+          <div className="text-base font-bold text-brand-green">{fmt(total)}</div>
+        </div>
+        <div className="card text-center shadow-none px-2">
+          <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">This Month</div>
+          <div className="text-base font-bold text-gray-800">{fmt(entries.filter(e => e.date === 'Today').reduce((s, e) => s + e.amount, 0))}</div>
+        </div>
+        <div className="card text-center shadow-none px-2">
+          <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Projected</div>
+          <div className="text-base font-bold text-gray-400">{fmt(projected)}</div>
+        </div>
+      </div>
+
+      <AddRevenueForm sources={REVENUE_DATA.sources} onAdd={handleAdd} />
+
+      <div className="flex items-center justify-between px-1">
+        <div className="section-label">Revenue Entries</div>
+        {total > 0 && <span className="text-xs font-bold text-brand-green">{fmt(total)} total</span>}
+      </div>
+
+      <RevenueList entries={entries} />
+    </div>
+  );
+}
+
 /* ── Expenses Tab ───────────────────────────────────────────── */
 function ExpensesView() {
   const [expSubView, setExpSubView] = useState('expense');
@@ -261,7 +401,7 @@ export default function FinanceSection() {
       {/* Pill toggle */}
       <div className="px-4 pt-3 pb-2 flex-shrink-0">
         <div className="pill-toggle">
-          {[['expenses', 'Expenses'], ['dashboard', 'Dashboard']].map(([id, label]) => (
+          {[['expenses', 'Expenses'], ['revenue', 'Revenue'], ['dashboard', 'Dashboard']].map(([id, label]) => (
             <button
               key={id}
               onClick={() => setView(id)}
@@ -275,6 +415,7 @@ export default function FinanceSection() {
 
       <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-3">
         {view === 'expenses'  && <ExpensesView />}
+        {view === 'revenue'   && <RevenueView />}
         {view === 'dashboard' && <DashboardView />}
       </div>
     </div>

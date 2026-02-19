@@ -413,6 +413,11 @@ export const FINANCE_DATA = {
   projects: ['Legal Formation', 'Market Research', 'Brand Identity', 'Technology & POS', 'General'],
 };
 
+export const REVENUE_DATA = {
+  sources: ['Dine-in', 'Takeout', 'Catering', 'Delivery', 'Other'],
+  entries: [],
+};
+
 export const FINANCIAL_PLAN_DATA = {
   estimatedBudget: 129000,
   breakEvenMonth: 6,

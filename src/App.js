@@ -15,7 +15,7 @@ const AI_HINTS = {
 const NAV_ITEMS = [
   { id: 'plan',    label: 'Plan',    Icon: Icons.Plan    },
   { id: 'track',   label: 'Track',   Icon: Icons.Track   },
-  { id: 'finance', label: 'Expenses', Icon: Icons.Finance },
+  { id: 'finance', label: 'Budget', Icon: Icons.Finance },
   { id: 'funding', label: 'Funding', Icon: Icons.Funding },
 ];
 
